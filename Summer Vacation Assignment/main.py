@@ -496,11 +496,10 @@ class SKQuoteLibEvents:
             next_interval_start = last_close_datetime + timedelta(minutes=5 - (last_close_datetime.minute % 5),
                                                                   seconds=-last_close_datetime.second)
 
-            # # 如果超過24小時，則將時間設置為下一天的00:00:00，可能會有換月問題要注意，換年等問題
-            # if next_interval_start.hour == 24:
-            #     next_interval_start = datetime(year=next_interval_start.year, month=next_interval_start.month,
-            #                                    day=next_interval_start.day + 1,
-            #                                    hour=0, minute=0, second=0)
+            if next_interval_start.second == 0  and next_interval_start.minute==0 and next_interval_start.hour==0 :
+                next_interval_start.day = next_interval_start.day-1
+
+                print("yes")
 
             time_str = next_interval_start.strftime("%Y%m%d - %H:%M:%S")
             row_data = [new_name, time_str, (self.data_current_min[new_name]["Open"])/100,
